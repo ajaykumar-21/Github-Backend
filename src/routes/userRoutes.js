@@ -3,6 +3,8 @@ const {
   saveUserData,
   findMutualFriends,
   searchUsers,
+  softDeleteUser,
+  updateUserDetails,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -11,5 +13,7 @@ const router = express.Router();
 router.post("/", saveUserData);
 router.get("/:username/mutual-friends", findMutualFriends);
 router.get("/search", searchUsers);
+router.delete("/:username/soft-delete", softDeleteUser);
+router.put("/:username", updateUserDetails);
 
 module.exports = router;

@@ -67,3 +67,41 @@ exports.searchUsers = async (req, res) => {
   }
 };
 
+exports.softDeleteUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOneAndUpdate(
+      { username },
+      { isActive: false },
+      { new: true }
+    );
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({ message: "User soft deleted", user });
+  } catch (error) {
+    console.error("Error soft deleting user:", error);
+    res.status(400).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { location, bio, blog } = req.body;
+
+    const user = await User.findOneAndUpdate(
+      { username },
+      { location, bio, blog },
+      { new: true }
+    );
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({ message: "User updated", user });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(400).json({ error: "Internal Server Error" });
+  }
+};
