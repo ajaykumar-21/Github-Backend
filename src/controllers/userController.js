@@ -25,12 +25,16 @@ exports.findMutualFriends = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Get the intersection of followers and following
-    const mutualFriends = user.followers.filter((follower) =>
-      user.following.includes(follower)
+    // Fallback for undefined followers and following
+    const followers = user.followers || [];
+    const following = user.following || [];
+
+    // Calculate mutual friends
+    const mutualFriends = followers.filter((follower) =>
+      following.includes(follower)
     );
 
-    //save mutual friends
+    // Update the friends field in the user document
     user.friends = mutualFriends;
     await user.save();
 
