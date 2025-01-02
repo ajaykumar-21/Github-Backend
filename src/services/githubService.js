@@ -1,5 +1,6 @@
 const axios = require("axios");
 
+// search username from github using Api and return data;
 exports.fetchGitHubUser = async (username) => {
   try {
     const response = await axios.get(
