@@ -47,3 +47,23 @@ exports.findMutualFriends = async (req, res) => {
     res.status(400).json({ error: "Internal server error" });
   }
 };
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    // Perform case-insensitive search on username and location
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: "i" } },
+        { location: { $regex: query, $options: "i" } },
+      ],
+    });
+
+    res.json(users);
+  } catch (error) {
+    console.error("Error searching users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
