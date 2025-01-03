@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
 
+// Allow requests from the frontend origin
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Frontend URL
+  })
+);
+
 app.use(express.json());
 
 // coonnection for mongoDb
